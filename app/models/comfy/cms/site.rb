@@ -56,6 +56,20 @@ class Comfy::Cms::Site < ActiveRecord::Base
     super
   end
 
+  def no_pages?
+    pages.count == 0
+  end
+
+  def pages_grouped_by_parent
+    pages.includes(:categories).group_by(&:parent_id)
+  end
+
+  def reorder_pages(page_ids)
+    Array(page_ids).each_with_index do |id, index|
+      pages.where(:id => id).update_all(:position => index)
+    end
+  end
+
 protected
 
   def self.real_host_from_aliases(host)
