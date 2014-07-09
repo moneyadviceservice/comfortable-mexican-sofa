@@ -42,13 +42,13 @@ protected
     return unless ComfortableMexicanSofa.config.enable_fixtures
     ComfortableMexicanSofa::Fixture::Importer.new(@cms_site.identifier).import!
   end
-  
+
   def load_cms_page
-    @cms_page = @cms_site.pages.published.find_by_full_path!("/#{params[:cms_path]}")
-  end    
+    @cms_page = @cms_site.find_published_page_by_full_path!("/#{params[:cms_path]}")
+  end
 
   def page_not_found
-    @cms_page = @cms_site.pages.published.find_by_full_path!('/404')
+    @cms_page = @cms_site.find_published_page_by_full_path!('/404')
 
     respond_with @cms_page do |format|
       format.html { render_html(404) }

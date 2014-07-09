@@ -56,6 +56,10 @@ class Comfy::Cms::Site < ActiveRecord::Base
     super
   end
 
+  def find_published_page_by_full_path!(path)
+    pages.published.find_by_full_path!(path)
+  end
+
   def no_pages?
     pages.count == 0
   end
