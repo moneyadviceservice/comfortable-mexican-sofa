@@ -172,70 +172,76 @@ class CmsPageTest < ActiveSupport::TestCase
       end
     end
   end
-  
+
   def test_options_for_select
-    assert_equal ['Default Page', '. . Child Page'], 
+    assert_equal ['Default Page', '. . Child Page'],
       Comfy::Cms::Page.options_for_select(comfy_cms_sites(:default)).collect{|t| t.first }
-    assert_equal ['Default Page'], 
+    assert_equal ['Default Page'],
       Comfy::Cms::Page.options_for_select(comfy_cms_sites(:default), comfy_cms_pages(:child)).collect{|t| t.first }
-    assert_equal [], 
+    assert_equal [],
       Comfy::Cms::Page.options_for_select(comfy_cms_sites(:default), comfy_cms_pages(:default))
-    
+
     page = Comfy::Cms::Page.new(new_params(:parent => comfy_cms_pages(:default)))
     assert_equal ['Default Page', '. . Child Page'],
       Comfy::Cms::Page.options_for_select(comfy_cms_sites(:default), page).collect{|t| t.first }
   end
-  
+
   def test_comfy_cms_blocks_attributes_accessor
     page = comfy_cms_pages(:default)
     assert_equal page.blocks.count, page.blocks_attributes.size
     assert_equal 'default_field_text', page.blocks_attributes.first[:identifier]
     assert_equal 'default_field_text_content', page.blocks_attributes.first[:content]
   end
-  
+
   def test_content_caching
     page = comfy_cms_pages(:default)
     assert_equal page.content_cache, page.render
-    
+
     page.update_columns(:content_cache => 'Old Content')
     refute_equal page.content_cache, page.render
-    
+
     page.clear_content_cache!
     assert_equal page.content_cache, page.render
   end
-  
+
   def test_content_cache_clear_on_save
     page = comfy_cms_pages(:default)
     old_content = 'Old Content'
     page.update_columns(:content_cache => old_content)
-    
+
     page.save!
     refute_equal old_content, page.content_cache
   end
-  
+
   def test_scope_published
     assert_equal 2, Comfy::Cms::Page.published.count
     comfy_cms_pages(:child).update_columns(:is_published => false)
     assert_equal 1, Comfy::Cms::Page.published.count
   end
-  
+
   def test_root?
     assert comfy_cms_pages(:default).root?
     assert !comfy_cms_pages(:child).root?
   end
-  
+
   def test_url
     site = comfy_cms_sites(:default)
-    
+
     assert_equal '//test.host/', comfy_cms_pages(:default).url
     assert_equal '//test.host/child-page', comfy_cms_pages(:child).url
-    
+
     site.update_columns(:path => '/en/site')
     comfy_cms_pages(:default).reload
     comfy_cms_pages(:child).reload
-    
+
     assert_equal '//test.host/en/site/', comfy_cms_pages(:default).url
     assert_equal '//test.host/en/site/child-page', comfy_cms_pages(:child).url
+  end
+
+  def test_custom_slug
+    page = comfy_cms_pages(:child)
+    page_1 = comfy_cms_sites(:default).pages.create!(new_params(:parent => page, :custom_slug => 'tést-ünicode-slug'))
+    assert_equal CGI::unescape('tést-ünicode-slug'), page_1.custom_slug
   end
 
   def test_unicode_slug_escaping

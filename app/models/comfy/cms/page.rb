@@ -20,7 +20,8 @@ class Comfy::Cms::Page < ActiveRecord::Base
     :class_name => 'Comfy::Cms::Page'
 
   # -- Callbacks ------------------------------------------------------------
-  before_validation :assigns_label,
+  before_validation :assigns_slug,
+                    :assigns_label,
                     :assign_parent,
                     :escape_slug,
                     :assign_full_path
@@ -43,17 +44,22 @@ class Comfy::Cms::Page < ActiveRecord::Base
     :presence   => true
   validate :validate_target_page
   validate :validate_format_of_unescaped_slug
+  validate :validate_format_of_unescaped_custom_slug
 
   # -- Scopes ---------------------------------------------------------------
   default_scope -> { order('comfy_cms_pages.position') }
   scope :published, -> { where(:is_published => true) }
 
-  scope :with_content_like, ->(phrase) { 
-    joins(:blocks).where("comfy_cms_blocks.content LIKE ?", "%#{phrase}%") 
+  scope :with_content_like, ->(phrase) {
+    joins(:blocks).where("comfy_cms_blocks.content LIKE ?", "%#{phrase}%")
   }
 
-  scope :with_label_like, ->(phrase) { 
-    where("label LIKE ?", "%#{phrase}%") 
+  scope :with_label_like, ->(phrase) {
+    where("label LIKE ?", "%#{phrase}%")
+  }
+
+  scope :with_custom_slug, ->(slug) {
+    find_by_custom_slug(slug) || find_by_full_path!("/" + slug)
   }
 
   # -- Class Methods --------------------------------------------------------
@@ -164,7 +170,15 @@ class Comfy::Cms::Page < ActiveRecord::Base
     blocks.find {|b| b.identifier == "content" }.try(:content) || ""
   end
 
+  def custom_slug
+    CGI::unescape(self.read_attribute(:custom_slug) || slug || "")
+  end
+
 protected
+
+  def assigns_slug
+    self.slug ||= custom_slug
+  end
 
   def assigns_label
     self.label = self.label.blank?? self.slug.try(:titleize) : self.label
@@ -195,9 +209,15 @@ protected
   end
 
   def validate_format_of_unescaped_slug
-    return unless slug.present?
-    unescaped_slug = CGI::unescape(self.slug)
-    errors.add(:slug, :invalid) unless unescaped_slug =~ /^\p{Alnum}[\.\p{Alnum}\p{Mark}_-]*$/i
+    validate_format_of(:slug) if slug.present?
+  end
+
+  def validate_format_of_unescaped_custom_slug
+    validate_format_of(:custom_slug) if custom_slug.present?
+  end
+
+  def validate_format_of(slug)
+    errors.add(slug, :invalid) unless CGI::unescape(self.send(slug)) =~ /^\p{Alnum}[\.\p{Alnum}\p{Mark}_-]*$/i
   end
 
   # Forcing re-saves for child pages so they can update full_paths
@@ -209,15 +229,16 @@ protected
     end
   end
 
-  # Escape slug unless it's nonexistent (root)
+  # Escape slug if it's present (root)
   def escape_slug
-    self.slug = CGI::escape(self.slug) unless self.slug.nil?
+    self.slug = CGI::escape(self.slug) if self.slug.present?
+    self.custom_slug = CGI::escape(custom_slug) if custom_slug.present?
   end
 
-  # Unescape the slug and full path back into their original forms unless they're nonexistent
+  # Unescape the slug and full path back into their original forms if they're present
   def unescape_slug_and_path
-    self.slug       = CGI::unescape(self.slug)      unless self.slug.nil?
-    self.full_path  = CGI::unescape(self.full_path) unless self.full_path.nil?
+    self.slug       = CGI::unescape(self.slug)      if self.slug.present?
+    self.full_path  = CGI::unescape(self.full_path) if self.full_path.present?
   end
 
   private

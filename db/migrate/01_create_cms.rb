@@ -46,6 +46,7 @@ class CreateCms < ActiveRecord::Migration
       t.integer :target_page_id
       t.string  :label,           :null => false
       t.string  :slug
+      t.string  :custom_slug
       t.string  :full_path,       :null => false
       t.text    :content_cache,   text_limit
       t.string  :state,           :null => false
