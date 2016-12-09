@@ -11,14 +11,25 @@ class Comfy::Cms::File < ActiveRecord::Base
 
   cms_is_categorized
 
-  attr_accessor :dimensions
+  attr_accessor :dimensions, :style
 
   has_attached_file :file, ComfortableMexicanSofa.config.upload_file_options.merge(
     # dimensions accessor needs to be set before file assignment for this to work
     :styles => lambda { |f|
       if f.respond_to?(:instance) && f.instance.respond_to?(:dimensions)
         (f.instance.dimensions.blank?? { } : { :original => f.instance.dimensions }).merge(
-          :cms_thumb => '80x60#'
+          hp_thumb_png_1x:  { geometry: '700x385#',  format: :png },
+          hp_thumb_png_2x:  { geometry: '700x385#',  format: :png },
+
+          hp_main_webp_1x:  { geometry: '1200x662#', convert_options: '-define webp:lossless=true', format: :webp },
+          hp_thumb_webp_2x: { geometry: '700x385#', convert_options: '-define webp:lossless=true', format: :webp },
+
+
+          hp_main_png_1x:   { geometry: '1200x662#', format: :png },
+          hp_main_png_2x:   { geometry: '1200x662#', format: :png },
+
+          hp_thumb_webp_1x: { geometry: '700x385#', convert_options: '-define webp:lossless=true', format: :webp },
+          hp_main_webp_2x:  { geometry: '1200x662#', convert_options: '-define webp:lossless=true', format: :webp }
         ).merge(ComfortableMexicanSofa.config.upload_file_options[:styles] || {})
       end
     }
