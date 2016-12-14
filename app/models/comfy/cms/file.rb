@@ -21,14 +21,14 @@ class Comfy::Cms::File < ActiveRecord::Base
           hp_thumb_png_1x:  { geometry: '700x385#',  format: :png },
           hp_thumb_png_2x:  { geometry: '700x385#',  format: :png },
 
-          hp_main_webp_1x:  { geometry: '1200x662#', convert_options: '-define webp:lossless=true', format: :webp },
+          hp_thumb_webp_1x: { geometry: '1200x662#', convert_options: '-define webp:lossless=true', format: :webp },
           hp_thumb_webp_2x: { geometry: '700x385#', convert_options: '-define webp:lossless=true', format: :webp },
 
 
           hp_main_png_1x:   { geometry: '1200x662#', format: :png },
           hp_main_png_2x:   { geometry: '1200x662#', format: :png },
 
-          hp_thumb_webp_1x: { geometry: '700x385#', convert_options: '-define webp:lossless=true', format: :webp },
+          hp_main_webp_1x:  { geometry: '700x385#', convert_options: '-define webp:lossless=true', format: :webp },
           hp_main_webp_2x:  { geometry: '1200x662#', convert_options: '-define webp:lossless=true', format: :webp }
         ).merge(ComfortableMexicanSofa.config.upload_file_options[:styles] || {})
       end
