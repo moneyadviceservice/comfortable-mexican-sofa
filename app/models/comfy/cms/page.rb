@@ -46,7 +46,7 @@ class Comfy::Cms::Page < ActiveRecord::Base
     :presence   => true
   validates :slug,
     :presence   => true,
-    :uniqueness => { :scope => :parent_id },
+    :uniqueness => { :scope => [:parent_id, :layout_id] },
     :unless     => lambda{ |p| p.site && (p.site.pages.count == 0 || p.site.pages.root == self) }
   validates :layout,
     :presence   => true
