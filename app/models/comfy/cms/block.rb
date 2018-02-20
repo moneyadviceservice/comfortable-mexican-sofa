@@ -13,9 +13,7 @@ class Comfy::Cms::Block < ActiveRecord::Base
   before_save :prepare_files
 
   # -- Validations ----------------------------------------------------------
-  validates :identifier,
-    :presence   => true,
-    :uniqueness => { :scope => [:blockable_type, :blockable_id] }
+  validates :identifier, :presence => true
 
   # -- Instance Methods -----------------------------------------------------
   # Tag object that is using this block
