@@ -58,8 +58,9 @@ module ComfortableMexicanSofa::CmsManageable
     end
 
     def find_or_initialize_block(block_hash)
-      self.blocks.detect { |b| b.identifier == block_hash[:identifier] } ||
-      self.blocks.build(identifier: block_hash[:identifier])
+      self.blocks.detect { |b| b.identifier == block_hash[:identifier] && block_hash[:content] == b.content } ||
+        self.blocks.detect { |b| b.identifier == block_hash[:identifier] } ||
+          self.blocks.build(identifier: block_hash[:identifier])
     end
 
     # Processing content will return rendered content and will populate
