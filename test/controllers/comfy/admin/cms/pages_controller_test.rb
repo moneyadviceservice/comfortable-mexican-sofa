@@ -55,8 +55,8 @@ class Comfy::Admin::Cms::PagesControllerTest < ActionController::TestCase
     assert assigns(:page)
     assert_equal comfy_cms_layouts(:default), assigns(:page).layout
     assert_template :new
-    assert_select "form[action=/admin/sites/#{site.id}/pages]"
-    assert_select "select[data-url=/admin/sites/#{site.id}/pages/0/form_blocks]"
+    assert_select "form[action='/admin/sites/#{site.id}/pages']"
+    assert_select "select[data-url='/admin/sites/#{site.id}/pages/0/form_blocks']"
     assert_select "form[action='/admin/sites/#{site.id}/files?ajax=true']"
   end
 
@@ -128,7 +128,7 @@ class Comfy::Admin::Cms::PagesControllerTest < ActionController::TestCase
     comfy_cms_layouts(:default).update_columns(:content => '{{cms:page:test_label}}')
     get :new, :site_id => comfy_cms_sites(:default)
     assert_response :success
-    assert_select "textarea[name='page[blocks_attributes][0][content]'][data-cms-cm-mode=text/html]"
+    assert_select "textarea[name='page[blocks_attributes][0][content]'][data-cms-cm-mode='text/html']"
     assert_select "input[type='hidden'][name='page[blocks_attributes][0][identifier]'][value='test_label']"
   end
 
@@ -172,7 +172,7 @@ class Comfy::Admin::Cms::PagesControllerTest < ActionController::TestCase
     comfy_cms_layouts(:default).update_columns(:content => '{{cms:page:test_label:markdown}}')
     get :new, :site_id => comfy_cms_sites(:default)
     assert_response :success
-    assert_select "textarea[name='page[blocks_attributes][0][content]'][data-cms-cm-mode=text/x-markdown]"
+    assert_select "textarea[name='page[blocks_attributes][0][content]'][data-cms-cm-mode='text/x-markdown']"
     assert_select "input[type='hidden'][name='page[blocks_attributes][0][identifier]'][value='test_label']"
   end
 
@@ -230,8 +230,8 @@ class Comfy::Admin::Cms::PagesControllerTest < ActionController::TestCase
     assert_response :success
     assert assigns(:page)
     assert_template :edit
-    assert_select "form[action=/admin/sites/#{page.site.id}/pages/#{page.id}]"
-    assert_select "select[data-url=/admin/sites/#{page.site.id}/pages/#{page.id}/form_blocks]"
+    assert_select "form[action='/admin/sites/#{page.site.id}/pages/#{page.id}']"
+    assert_select "select[data-url='/admin/sites/#{page.site.id}/pages/#{page.id}/form_blocks']"
   end
 
   def test_get_edit_failure

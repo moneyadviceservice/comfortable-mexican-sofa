@@ -30,7 +30,7 @@ class FixturesIntergrationTest < ActionDispatch::IntegrationTest
         assert_difference 'Comfy::Cms::Snippet.count', 1 do
           get '/'
           assert_response :redirect
-          assert_redirected_to '//test.host/child'
+          assert_redirected_to '/child'
           follow_redirect!
           
           assert_equal 'Home Fixture Page', Comfy::Cms::Page.root.label

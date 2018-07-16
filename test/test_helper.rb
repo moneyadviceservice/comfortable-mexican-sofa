@@ -14,16 +14,12 @@ require 'mocha/setup'
 Paperclip::Attachment.default_options[:use_timestamp] = false
 
 class ActiveSupport::TestCase
-  fixtures :all
   include ActionDispatch::TestProcess
-  
-  def setup
-    reset_config
-    stub_paperclip
 
-    DatabaseCleaner.strategy = :transaction
-  end
-  
+  fixtures :all
+  setup :reset_config,
+        :stub_paperclip
+
   # resetting default configuration
   def reset_config
     ComfortableMexicanSofa.configure do |config|
@@ -44,12 +40,13 @@ class ActiveSupport::TestCase
       config.allow_irb            = false
       config.allowed_helpers      = nil
       config.allowed_partials     = nil
+      config.allowed_templates    = nil
       config.hostname_aliases     = nil
     end
     ComfortableMexicanSofa::HttpAuth.username = 'username'
     ComfortableMexicanSofa::HttpAuth.password = 'password'
   end
-  
+
   # Example usage:
   #   assert_has_errors_on @record, :field_1, :field_2
   def assert_has_errors_on(record, *fields)
@@ -98,17 +95,19 @@ class ActiveSupport::TestCase
 end
 
 class ActionController::TestCase
-  def setup
+
+  setup :setup_auth
+
+  def setup_auth
     @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64('username:password')}"
   end
 end
 
 class ActionDispatch::IntegrationTest
-  
-  def setup
+  setup :setup_host
+
+  def setup_host
     host! 'test.host'
-    reset_config
-    stub_paperclip
   end
   
   # Attaching http_auth stuff with request. Example use:
@@ -119,12 +118,12 @@ class ActionDispatch::IntegrationTest
 end
 
 class Rails::Generators::TestCase
-  
-  destination File.expand_path('../tmp', File.dirname(__FILE__))
-  
+
   setup :prepare_destination,
         :prepare_files
-  
+
+  destination File.expand_path('../tmp', File.dirname(__FILE__))
+
   def prepare_files
     config_path = File.join(self.destination_root, 'config')
     routes_path = File.join(config_path, 'routes.rb')

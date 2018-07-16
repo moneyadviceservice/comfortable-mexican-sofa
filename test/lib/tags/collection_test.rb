@@ -87,9 +87,9 @@ class CollectionTagTest < ActiveSupport::TestCase
     assert tag.block.content.blank?
     
     snippet = comfy_cms_snippets(:default)
-    tag.block.content = snippet.id
-    assert_equal snippet.id, tag.block.content
-    assert_equal snippet.id, tag.content
+    tag.block.content = snippet.id.to_s
+    assert_equal snippet.id.to_s, tag.block.content
+    assert_equal snippet.id.to_s, tag.content
     assert_equal "<%= render :partial => 'partials/comfy/cms/snippets', :locals => {:model => 'Comfy::Cms::Snippet', :identifier => '#{snippet.id}'} %>", tag.render
   end
   

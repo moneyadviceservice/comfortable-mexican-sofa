@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 gemspec
 
 gem "transitions", :require => ["transitions", "active_model/transitions"]
+gem 'responders', '~> 2.0'
 
 group :development do
   gem 'awesome_print'
