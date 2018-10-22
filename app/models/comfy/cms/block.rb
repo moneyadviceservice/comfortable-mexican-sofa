@@ -3,8 +3,6 @@ class Comfy::Cms::Block < ActiveRecord::Base
 
   FILE_CLASSES = %w(ActionDispatch::Http::UploadedFile Rack::Test::UploadedFile File).freeze
 
-  serialize :content
-
   attr_accessor :temp_files
 
   # -- Relationships --------------------------------------------------------
