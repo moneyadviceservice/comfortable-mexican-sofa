@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 gemspec
 
 gem "transitions", :require => ["transitions", "active_model/transitions"]
+gem 'responders', '~> 2.0'
 
 group :development do
   gem 'awesome_print'
@@ -19,7 +20,7 @@ group :test do
   gem 'coveralls',  :require => false
   gem 'timecop'
   gem 'rspec-core'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'database_cleaner'
   gem 'faker', '~> 1.7'
   gem 'pry-byebug'

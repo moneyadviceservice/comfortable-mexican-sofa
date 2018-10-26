@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :revision, class: Comfy::Cms::Revision do
     association :record, factory: :page
     data {
