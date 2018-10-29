@@ -24,4 +24,5 @@ group :test do
   gem 'database_cleaner'
   gem 'faker', '~> 1.7'
   gem 'pry-byebug'
+  gem 'nokogiri', '~>1.6.0'
 end
