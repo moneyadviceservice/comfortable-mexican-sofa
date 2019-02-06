@@ -2,6 +2,8 @@ source 'http://rubygems.org'
 
 gemspec
 
+ruby '2.5.3'
+
 gem "transitions", :require => ["transitions", "active_model/transitions"]
 gem 'responders', '~> 2.0'
 
