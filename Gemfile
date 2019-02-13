@@ -21,7 +21,7 @@ group :test do
   gem 'danger', require: false
   gem 'danger-rubocop', require: false
   gem 'database_cleaner'
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '~> 4.11.0'
   gem 'faker', '~> 1.7'
   gem 'jdbc-sqlite3', :platform => :jruby
   gem 'mocha', :require => false
