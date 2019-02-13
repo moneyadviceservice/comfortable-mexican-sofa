@@ -25,10 +25,10 @@ group :test do
   gem 'faker', '~> 1.7'
   gem 'jdbc-sqlite3', :platform => :jruby
   gem 'mocha', :require => false
+  gem 'mysql2', '~> 0.3.18'
   gem 'nokogiri', '~>1.6.0'
   gem 'pry-byebug'
   gem 'rspec-core'
-  gem 'sqlite3', '1.3.6', :platform => [:ruby, :mswin, :mingw]
   gem 'timecop'
   gem 'tzinfo-data'
 end
