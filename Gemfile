@@ -15,16 +15,20 @@ group :development do
 end
 
 group :test do
-  gem 'sqlite3',                          :platform => [:ruby, :mswin, :mingw]
-  gem 'jdbc-sqlite3',                     :platform => :jruby
   gem 'activerecord-jdbcsqlite3-adapter', :platform => :jruby
-  gem 'mocha',      :require => false
   gem 'coveralls',  :require => false
-  gem 'timecop'
-  gem 'rspec-core'
-  gem 'factory_bot_rails'
+  gem 'brakeman', require: false
+  gem 'danger', require: false
+  gem 'danger-rubocop', require: false
   gem 'database_cleaner'
+  gem 'factory_bot_rails', '~> 4.11.0'
   gem 'faker', '~> 1.7'
-  gem 'pry-byebug'
+  gem 'jdbc-sqlite3', :platform => :jruby
+  gem 'mocha', :require => false
+  gem 'mysql2', '~> 0.3.18'
   gem 'nokogiri', '~>1.6.0'
+  gem 'pry-byebug'
+  gem 'rspec-core'
+  gem 'timecop'
+  gem 'tzinfo-data'
 end

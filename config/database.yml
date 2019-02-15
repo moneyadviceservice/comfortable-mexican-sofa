@@ -5,7 +5,12 @@ development:
   timeout: 10000
 
 test:
-  adapter: sqlite3
-  database: db/test.sqlite3
+  adapter: mysql2
+  username: mas
+  password: mas
+  database: comfy_test
+  encoding: utf8
+  host: database
+  port: 3306
   pool: 5
-  timeout: 10000
+  timeout: 5000
