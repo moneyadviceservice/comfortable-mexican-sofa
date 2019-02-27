@@ -29,7 +29,6 @@ function info {
     fi
 }
 
-run ls bundle/cache
 run bundle install --path=vendor/cache
 run bundle exec rake db:drop db:create db:migrate
 run bundle exec rake test

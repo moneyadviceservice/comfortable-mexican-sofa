@@ -18,6 +18,7 @@ pipeline {
         stage ('branch-test') {
           when { not { branch 'PR-*' } }
             steps {
+                sh 'pwd'
                 sh 'find . -type d'
             }
         }
