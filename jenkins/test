@@ -12,7 +12,6 @@ export BUNDLE_WITHOUT=development:build
 
 function run {
     declare -a tests_command=("$@")
-
     echo ''
     echo "=== Running \`${tests_command[*]}\`"
     if ! ${tests_command[*]}; then
