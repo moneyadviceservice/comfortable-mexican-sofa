@@ -18,7 +18,7 @@ pipeline {
         stage ('branch-test') {
           when { not { branch 'PR-*' } }
             steps {
-                sh 'find /var/tmp/. -type d'
+                sh 'find . -type d'
             }
         }
         stage ('pr-test') {
