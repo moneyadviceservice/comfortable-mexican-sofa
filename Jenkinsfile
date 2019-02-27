@@ -18,7 +18,7 @@ pipeline {
         stage ('branch-test') {
           when { not { branch 'PR-*' } }
             steps {
-                sh 'cp -a /var/lib/jenkins/jobs/comfortable-mexican-sofa/vendor/. .'
+                sh 'cd /var/tmp/app/comfortable-mexican-sofa/'
                 sh 'pwd'
                 sh 'find . -type d'
             }
