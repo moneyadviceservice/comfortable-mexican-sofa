@@ -5,7 +5,6 @@ set -e
 if [ -f /.dockerenv ]; then
     source ~/.bashrc
     rvm use default
-    rvm gemset list
 fi
 
 export RAILS_ENV=test
