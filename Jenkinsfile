@@ -18,8 +18,7 @@ pipeline {
         stage ('branch-test') {
           when { not { branch 'PR-*' } }
             steps {
-                sh 'pwd'
-                sh 'find . -type d'
+                sh 'docker-compose -f docker-compose.yml run --rm rails ./jenkins/test'
             }
         }
         stage ('pr-test') {
