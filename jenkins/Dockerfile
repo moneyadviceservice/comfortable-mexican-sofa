@@ -6,4 +6,6 @@ RUN apt-get -qq update > /dev/null && \
   apt-get -qq clean  > /dev/null && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+COPY jenkins/test /var/tmp/app/comfortable-mexican-sofa/jenkins/test
+
 WORKDIR /var/tmp/app/comfortable-mexican-sofa
