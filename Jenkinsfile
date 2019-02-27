@@ -18,7 +18,7 @@ pipeline {
         stage ('branch-test') {
           when { not { branch 'PR-*' } }
             steps {
-                sh 'cd /var/tmp/app/comfortable-mexican-sofa/'
+                sh 'cd /var/tmp/'
                 sh 'pwd'
                 sh 'find . -type d'
             }
