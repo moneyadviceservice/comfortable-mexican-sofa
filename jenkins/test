@@ -5,7 +5,7 @@ set -e
 if [ -f /.dockerenv ]; then
     source ~/.bashrc
     rvm use default
-    rvm gemset use comfortable-mexican-sofa
+    rvm gemset list
 fi
 
 export RAILS_ENV=test
