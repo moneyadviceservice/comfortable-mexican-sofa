@@ -11,6 +11,5 @@ rdoc
 public/*
 Gemfile.lock
 .rvmrc
-.ruby-gemset
 /.sass-cache
 coverage/
