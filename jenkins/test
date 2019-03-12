@@ -10,8 +10,6 @@ fi
 export RAILS_ENV=test
 export BUNDLE_WITHOUT=development:build
 
-exit_code=0
-
 function run {
     declare -a tests_command=("$@")
 
@@ -19,7 +17,7 @@ function run {
     echo "=== Running \`${tests_command[*]}\`"
     if ! ${tests_command[*]}; then
         echo "=== These tests failed."
-        exit_code=1
+        exit 1
     fi
 }
 
@@ -32,7 +30,7 @@ function info {
     fi
 }
 
-run bundle install --quiet
+run bundle install
 run bundle exec rake db:drop db:create db:migrate
 run bundle exec rake test
 info bundle exec brakeman -q --no-pager --ensure-latest
@@ -40,5 +38,3 @@ info bundle exec brakeman -q --no-pager --ensure-latest
 if [ -f /.dockerenv ]; then
   run bundle exec danger --dangerfile=jenkins/Dangerfile --verbose
 fi
-
-exit "$exit_code"

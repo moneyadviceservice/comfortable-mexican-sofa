@@ -9,7 +9,6 @@ fi
 
 export RAILS_ENV=build
 export BUNDLE_WITHOUT="development:test"
-exit_code=0
 
 function run {
     declare -a build_command=("$@")
@@ -17,12 +16,10 @@ function run {
     echo "=== Running \`${build_command[*]}\`"
     if ! ${build_command[*]}; then
         echo "=== This build failed."
-        exit_code=1
+        exit 1
     fi
 }
 run bundle install
 run bowndler install --production --allow-root
 run gem build *.gemspec
 run gem inabox *.gem -g http://gems.dev.mas.local
-
-exit "$exit_code"
